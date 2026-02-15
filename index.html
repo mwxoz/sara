@@ -1,7 +1,8 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Happy Valentine</title>
 
 <style>
@@ -15,6 +16,7 @@ body {
     text-align: center;
     margin: 0;
     padding: 15px;
+    overflow: hidden;
 }
 
 .card {
@@ -24,12 +26,18 @@ body {
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     width: 100%;
     max-width: 380px;
-    transition: all 0.3s ease;
+    transition: all 0.4s ease;
+    animation: fadeIn 0.8s ease;
 }
 
-h1 { font-size: 22px; }
-h2 { font-size: 20px; }
-p  { font-size: 15px; }
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+h1 { font-size: 22px; color: #ff4d6d; }
+h2 { font-size: 20px; color: #ff4d6d; }
+p  { font-size: 15px; color: #ff4d6d; }
 
 button {
     background: #ff4d6d;
@@ -66,20 +74,147 @@ input {
     text-align: left;
 }
 
-/* تحسين خاص للجوال */
-@media (max-width: 480px) {
-    .card {
-        padding: 20px;
-        border-radius: 15px;
-    }
+.heart {
+    position: absolute;
+    animation: floatUp 3s linear;
+}
 
+@keyframes floatUp {
+    from { transform: translateY(0); opacity: 1; }
+    to { transform: translateY(-100vh); opacity: 0; }
+}
+
+@media (max-width: 480px) {
+    .card { padding: 20px; border-radius: 15px; }
     h1 { font-size: 20px; }
     h2 { font-size: 18px; }
-
-    button {
-        width: 100%;
-        font-size: 15px;
-    }
+    button { width: 100%; font-size: 15px; }
 }
 </style>
 </head>
+<body>
+
+<audio id="bgMusic" loop>
+    <source src="Ellie Goulding - Love Me Like You Do (Lyrics).mp3" type="audio/mpeg">
+</audio>
+
+<button id="musicToggle" style="position:fixed; top:10px; right:10px; z-index:1000; background:#ff69b4; padding:10px 15px; border-radius:20px; border:none; color:white; cursor:pointer;">
+🎵 Music
+</button>
+
+<div id="loginBox" class="card">
+    <h2>Enter the password 🔐</h2>
+    <input type="date" id="password">
+    <br><br>
+    <button onclick="checkPassword()">Enter</button>
+    <p id="error" style="color:red;"></p>
+</div>
+
+<div id="confirmBox" class="card" style="display:none;">
+    <h2>Are you sure you want to continue? 💖</h2>
+    <button id="yesBtn" onclick="showWelcome()">Yes</button>
+    <button id="noBtn" onclick="resizeButtons()">No</button>
+</div>
+
+<div id="welcomeBox" class="card" style="display:none;">
+    <h2>Hi sara 💖</h2>
+    <p>Press Continue if you are ready</p>
+    <button onclick="showLove()">Continue</button>
+</div>
+
+<div id="mainCard" class="card" style="display:none;">
+    <h1>Happy Valentine ❤️</h1>
+    <div id="romanticMsgContainer"></div>
+</div>
+
+<script>
+var correctDate = "2025-06-25";
+
+var yesSize = 16;
+var noSize = 16;
+
+var romanticText = [
+"I feel so lucky to have met you 💖",
+"Every moment we share fills my heart with joy 🌹",
+"Your smile brightens even my darkest days 💖",
+"Being with you makes everything in life more beautiful 🌹",
+"I cherish every laugh, every conversation 💖",
+"You make life brighter and more beautiful 🌹",
+"You are my dream and my reality 💖",
+"Forever yours, with all my love 🌹"
+];
+
+function checkPassword() {
+    var input = document.getElementById("password").value;
+    if (input === correctDate) {
+        document.getElementById("loginBox").style.display = "none";
+        document.getElementById("confirmBox").style.display = "block";
+    } else {
+        document.getElementById("error").innerText = "Wrong password 😢";
+    }
+}
+
+function resizeButtons() {
+    yesSize += 2;
+    if (noSize > 10) noSize -= 2;
+    document.getElementById("yesBtn").style.fontSize = yesSize + "px";
+    document.getElementById("noBtn").style.fontSize = noSize + "px";
+}
+
+function showWelcome() {
+    document.getElementById("confirmBox").style.display = "none";
+    document.getElementById("welcomeBox").style.display = "block";
+    document.getElementById("bgMusic").play();
+}
+
+function showLove() {
+    document.getElementById("welcomeBox").style.display = "none";
+    document.getElementById("mainCard").style.display = "block";
+    typeText(0);
+}
+
+function typeText(index) {
+    if(index >= romanticText.length) return;
+    let container = document.getElementById("romanticMsgContainer");
+    let line = document.createElement("p");
+    container.appendChild(line);
+    let charIndex = 0;
+    let text = romanticText[index];
+
+    let interval = setInterval(()=>{
+        if(charIndex < text.length){
+            line.innerHTML += text[charIndex];
+            charIndex++;
+            if(Math.random() < 0.07){
+                createHeart();
+            }
+        } else {
+            clearInterval(interval);
+            typeText(index+1);
+        }
+    }, 40);
+}
+
+function createHeart(){
+    let heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = Math.random()<0.5?"💖":"🌹";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.top = "100vh";
+    heart.style.fontSize = (14+Math.random()*20) + "px";
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(), 3000);
+}
+
+document.getElementById("musicToggle").addEventListener("click", function(){
+    var music = document.getElementById("bgMusic");
+    if(music.paused){
+        music.play();
+    } else {
+        music.pause();
+    }
+});
+</script>
+
+</body>
+</html>

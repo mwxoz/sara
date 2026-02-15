@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,7 +37,7 @@ body {
 
 h1 { font-size: 22px; color: #ff4d6d; }
 h2 { font-size: 20px; color: #ff4d6d; }
-p  { font-size: 15px; color: #ff4d6d; }
+p  { font-size: 15px; color: #ff4d6d; line-height: 1.6; }
 
 button {
     background: #ff4d6d;
@@ -71,7 +71,7 @@ input {
     max-height: 250px;
     overflow-y: auto;
     margin-top: 15px;
-    text-align: left;
+    text-align: right;
 }
 
 .heart {
@@ -95,7 +95,7 @@ input {
 <body>
 
 <audio id="bgMusic" loop>
-    <source src="Ellie Goulding - Love Me Like You Do (Lyrics).mp3" type="audio/mpeg">
+    <source src="Hamza Namira - Fady Shewaya  حمزة نمرة - فاضي شوية.mp3" type="audio/mpeg">
 </audio>
 
 <button id="musicToggle" style="position:fixed; top:10px; right:10px; z-index:1000; background:#ff69b4; padding:10px 15px; border-radius:20px; border:none; color:white; cursor:pointer;">
@@ -103,23 +103,23 @@ input {
 </button>
 
 <div id="loginBox" class="card">
-    <h2>Enter the password 🔐</h2>
+    <h2>guess the password 😆</h2>
     <input type="date" id="password">
     <br><br>
-    <button onclick="checkPassword()">Enter</button>
+    <button onclick="checkPassword()">enter</button>
     <p id="error" style="color:red;"></p>
 </div>
 
 <div id="confirmBox" class="card" style="display:none;">
-    <h2>Are you sure you want to continue? 💖</h2>
-    <button id="yesBtn" onclick="showWelcome()">Yes</button>
-    <button id="noBtn" onclick="resizeButtons()">No</button>
+    <h2>u sure you want to cotinue? 💖</h2>
+    <button id="yesBtn" onclick="showWelcome()">yes 💕</button>
+    <button id="noBtn" onclick="resizeButtons()">NO</button>
 </div>
 
 <div id="welcomeBox" class="card" style="display:none;">
-    <h2>Hi sara 💖</h2>
-    <p>Press Continue if you are ready</p>
-    <button onclick="showLove()">Continue</button>
+    <h2>Hi Sara💖</h2>
+    <p>press cotinue if u are ready💖 </p>
+    <button onclick="showLove()">cotinue</button>
 </div>
 
 <div id="mainCard" class="card" style="display:none;">
@@ -130,19 +130,34 @@ input {
 <script>
 var correctDate = "2025-06-25";
 
+var romanticText = [
+"انهارده 14/2 عيد الحب ♥️",
+"احب اقولك انتي فعلاً تستااااهلي اني اقول انك عوضي من ربنا 🌍♥️",
+"دخلتي حياتي وخلتيني بحب الوقت اللي بتكوني موجودة معايا فيه 🥹✨",
+"بقيت بحب أي حاجة انتي بتحبيها عشان انتي عوض كبير من ربنا ليا 🌍😘",
+"بحمد ربنا انه رزقني بيكي يا نور عيني 🥹♥️",
+"انتي الوحيدة اللي حسيت معاها بحب بجد 🌍🥹",
+"حبيتك أكتر من أي حاجة في دنيتي عشان انتي كل دنيتي أصلاً 👑♥️",
+"لقيت منك حب وطيبة وحنية وخوف وجدعنة 🌍🫂",
+"وجودك في حياتي مكفيني ومعوضني عن أي حاجة وحشة شوفتها قبلك 💖",
+"مكتفي بيكي ومليش غيرك ولا عاوز غيرك 🥹🌍",
+"انتي سند بجد بعد ربنا 🌍🫂",
+"كل يوم غلاوتك بتزيد في قلبي عن اليوم اللي قبله 🥰",
+"العمر كله مع بعض ونفضل سند لبعض دايمًا 🫂🌍",
+"عمري ما اندم إني خليتك شريكة حياتي ♥️",
+"أنا فخور بيكي جدًا وإنك في حياتي 🥹",
+"انتي إنجاز أفتخر بيه وأشكر ربنا عليه ألف مرة 🫂✨",
+"مبسوط بوجودك في حياتي أوي وصوتك بيطمني 🥹🌍",
+"ضحكتك القمر دي بتخليني أسعد واحد في الدنيا 🥰",
+"بقيتي كل أهلي وناسي 🌍🫀",
+"هتفضلي أجمل حاجة حصلت في حياتي وأغلى من عمري 🥹♥️",
+"ربنا ما يحرمنيش منك يا حتة مني 💍💖",
+"بحبككككك أوي يا أغلى حد في حياتي 👑✨♥️",
+"يا حبيبة عمري وتاج راسي 👑♥️"
+];
+
 var yesSize = 16;
 var noSize = 16;
-
-var romanticText = [
-"I feel so lucky to have met you 💖",
-"Every moment we share fills my heart with joy 🌹",
-"Your smile brightens even my darkest days 💖",
-"Being with you makes everything in life more beautiful 🌹",
-"I cherish every laugh, every conversation 💖",
-"You make life brighter and more beautiful 🌹",
-"You are my dream and my reality 💖",
-"Forever yours, with all my love 🌹"
-];
 
 function checkPassword() {
     var input = document.getElementById("password").value;
@@ -150,7 +165,7 @@ function checkPassword() {
         document.getElementById("loginBox").style.display = "none";
         document.getElementById("confirmBox").style.display = "block";
     } else {
-        document.getElementById("error").innerText = "Wrong password 😢";
+        document.getElementById("error").innerText = "تاريخ غلط 😢";
     }
 }
 
@@ -164,7 +179,8 @@ function resizeButtons() {
 function showWelcome() {
     document.getElementById("confirmBox").style.display = "none";
     document.getElementById("welcomeBox").style.display = "block";
-    document.getElementById("bgMusic").play();
+    var music = document.getElementById("bgMusic");
+    music.play().catch(()=>{});
 }
 
 function showLove() {
@@ -178,6 +194,8 @@ function typeText(index) {
     let container = document.getElementById("romanticMsgContainer");
     let line = document.createElement("p");
     container.appendChild(line);
+    container.scrollTop = container.scrollHeight;
+
     let charIndex = 0;
     let text = romanticText[index];
 
@@ -218,3 +236,4 @@ document.getElementById("musicToggle").addEventListener("click", function(){
 
 </body>
 </html>
+
